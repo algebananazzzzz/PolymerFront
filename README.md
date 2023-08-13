@@ -15,15 +15,22 @@ PolymerFront is a Framework dedicated to empower FrontEnd development with React
 
 PolymerFront is a member of the Polymer framework family, designed to empower developers in building sophisticated applications. This framework utilizes Terraform for provisioning Serverless resources within the AWS Cloud Infrastructure, while also facilitating the establishment of streamlined CI/CD pipelines through GitHub Actions. For more information about the Polymer framework, please visit the [PolymerBase repository](https://github.com/algebananazzzzz/PolymerBase).
 
+
 PolymerFront aims to empower frontend development with React. This framework enables developers to bundle React application with GatsbyJS, push content to S3 and subsequently deliver content to consumers via CloudFront. The process is optimized through streamlined CI/CD pipelines, ensuring efficient and reliable deployment.
 
 ## Configuration
+
+Please refer to the example configuration file for additional information:
+[Example Configuration File](.polymer/.config/example.{stage}.env.yml)
+
 
 Configuration within PolymerFront consists of two key aspects:
 
 1. Resource Configuration: This involves the setup and customization of the resources that PolymerFront deploys, including CloudFront and S3.
 
 2. Application Configuration: Variables used in your application. Consists of parameters such as Cognito user and identity pool IDs, Apollo Client configuration, and S3 data bucket name
+
+
 
 Configuration is stored in YAML files, specific to CI/CD staging environments. General configuration files are located in .polymer/.config and should follow the format {stage}.env.yml (e.g., dev.env.yml for development).
 
@@ -34,6 +41,7 @@ Gatsby configuration files are found in .polymer/.gatsbyconfig folder, used to c
 1. PolymerFront utilises the **GatsbyJS framework** to bundle **React** applications into static files for production. Learn more about [GatsbyJS](https://www.gatsbyjs.com). 
 
 2. It integrates with the **[Amplify](https://docs.amplify.aws/lib/q/platform/js/) Auth and Content** package, allowing for smooth interaction with Cognito identity and user pools. This integration also enables the utilization of S3 buckets for the storage of user data and other essential resources. 
+
 
 To configure cognito user and identity pool, as well as data buckets, follow this syntax:
 ```yaml
@@ -46,6 +54,7 @@ storage:
   name: polymer-bucket-data
   region: ap-southeast-1
 ```
+
 
 3. PolymerFront also integrates with **ApolloClient** using the [gatsby-plugin-apollo](https://www.gatsbyjs.com/plugins/gatsby-plugin-apollo) plugin, providing a robust platform for efficient communication with GraphQL APIs and streamlined data management.
 
@@ -109,7 +118,7 @@ gatsby build
 ```
 
 2. **Create a GitHub Repository:**
-Start by creating a GitHub repository. After that, follow these steps to initialize Git and switch to the dev branch:
+Start by creating a GitHub repository. After that, follow these steps to initialize Git and switch to the `dev` branch:
 ```
 git init
 git add -A
@@ -122,9 +131,9 @@ git remote set-url origin https://github.com/{your_repository_name}.git
 
 For secure and streamline access to AWS and Terraform Cloud, follow these steps to configure secrets and variables within your GitHub repository:
 
-- Click on the 'Settings' tab within your repository.
-- Navigate to 'Secrets' (or 'Environments' > 'Secrets' depending on your GitHub version).
-- Click on 'New repository secret' to add secrets or 'New repository variable' to add variables.
+- Click on the `Settings` tab within your repository.
+- Navigate to `Secrets` (or `Environments` > `Secrets` depending on your GitHub version).
+- Click on `New repository secret` to add secrets or `New repository variable` to add variables.
 
 **Required Secrets:**
 
