@@ -64,6 +64,9 @@ apollo_client:
   uri: https://123abc.execute-api.ap-southeast-1.amazonaws.com/dev/api
 ```
 
+4. Finally, PolymerFront also integrates with both TailWindCSS and Preline, enhancing your styling capabilities. To add your custom styles, navigate to `src/styles/global.css`.
+
+
 ## Resources
 
 Here are the resources that PolymerFront will deploy, along with instructions on how to configure them:
