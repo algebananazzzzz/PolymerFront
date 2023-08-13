@@ -1,0 +1,46 @@
+login:
+  page_content:
+    login:
+      header: Log in
+      description: Don't have an account yet?
+      link: Sign up here
+    newpassword:
+      header: Set new password
+    confirmaccount:
+      header: Confirm account
+      description: Please check your email for the OTP.
+      action: Resend OTP
+signup:
+  page_content:
+    signup:
+      header: Sign up
+      description: Already have an account?
+      link: Log in here
+    confirmaccount:
+      header: Confirm account
+      description: Please check your email for the OTP.
+      action: Resend OTP
+forgotpw:
+  page_content:
+    forgotpw:
+      header: Forgot Password
+      description: Remembered your old password?
+      link: Log in here
+    confirmotp:
+      header: Reset Password
+changepw:
+  page_content:
+    changepw:
+      header: Change Password
+      description: Changed your mind?
+      link: Return back
+verify:
+  page_content:
+    verify:
+      header: Verify Email
+      description: Please use a valid email address.
+      link: Return
+    confirmotp:
+      header: Verify Email
+      description: Please check your email for the OTP.
+      action: Resend OTP

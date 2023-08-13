@@ -1,0 +1,37 @@
+{
+  "name": "projectballsfrontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "projectballsfrontend",
+  "author": "algebananazzzzz",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "deploy": "gatsby-plugin-s3 deploy --yes",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.15",
+    "@aws-amplify/auth": "^5.4.0",
+    "aws-amplify": "^5.2.5",
+    "formik": "^2.4.1",
+    "gatsby": "^5.10.0",
+    "gatsby-plugin-apollo": "^4.0.3",
+    "gatsby-plugin-s3": "^0.4.1",
+    "graphql": "^16.6.0",
+    "preline": "^1.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "gatsby-plugin-postcss": "^6.10.0",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}
