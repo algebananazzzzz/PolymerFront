@@ -25,12 +25,15 @@ function configureEnv(config) {
       Object.entries(value).forEach(([key, value]) => {
         process.env[`GATSBY_COGNITO_${key.toUpperCase()}`] = value
       })
+    } else if (key === 'storage') {
+      Object.entries(value).forEach(([key, value]) => {
+        process.env[`GATSBY_DATA_BUCKET_${key.toUpperCase()}`] = value
+      })
     } else if (key === 'deployment') {
       target_bucket = value.target_bucket
     } else if (key === 'apollo_client') {
       process.env.GATSBY_APOLLO_URI = value.uri
-    }
-    else {
+    } else {
       process.env[key] = value;
     }
   });
@@ -38,6 +41,8 @@ function configureEnv(config) {
 
 if (yamlConfig) {
   configureEnv(yamlConfig)
+} else {
+  throw new Error(`No configuration file specified. Expected configuration file in location .polymer/.config/${stage}.env.yml`);
 }
 
 // Override environment variables from gatsby_config, which takes precedence
