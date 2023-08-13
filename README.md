@@ -1,15 +1,18 @@
 # PolymerFront
 
-PolymerFront is a Framework dedicated to empower FrontEnd development with React using GatsbyJS. It simplifies the provisioning of frontend Serverless AWS resources using Terraform with CI/CD pipelines.
+PolymerFront is a Framework dedicated to empower FrontEnd development with React using GatsbyJS. It simplifies the provisioning of frontend Serverless AWS resources using Terraform with CI/CD pipelines. Additionally, it simplifies interactions with Cognito user and identity pools, as well as S3 data buckets, by configuring Amplify to interact with these services. This also encompasses user signup, login, verification, forgot password, and change password pages, including the underlying logic that interacts with Amplify.
+
 
 ## Table of Contents
 
 - [About](#about)
-- [Features](#features)
+- [Configuration](#configuration)
+- [Integrations](#integrations)
+- [Resources](#resources)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
+- [Deployment](#deployment)
 - [License](#license)
+- [Contact](#contact)
 
 ## About
 
@@ -24,13 +27,13 @@ Please refer to the example configuration file for additional information:
 [Example Configuration File](.polymer/.config/example.{stage}.env.yml)
 
 
-Configuration within PolymerFront consists of two key aspects:
+Configuration within PolymerFront consists of three key aspects:
 
 1. Resource Configuration: This involves the setup and customization of the resources that PolymerFront deploys, including CloudFront and S3.
 
 2. Application Configuration: Variables used in your application. Consists of parameters such as Cognito user and identity pool IDs, Apollo Client configuration, and S3 data bucket name
 
-
+3. Content Configuration: Customize the title, description, and links within the authentication pages like signup, login, and forgot password. Modify this configuration in the .polymer/content/auth.content.yml file. 
 
 Configuration is stored in YAML files, specific to CI/CD staging environments. General configuration files are located in .polymer/.config and should follow the format {stage}.env.yml (e.g., dev.env.yml for development).
 
@@ -55,6 +58,8 @@ storage:
   region: ap-southeast-1
 ```
 
+Furthermore, the application includes a built-in authentication flow page and components located at /src/components/auth and /src/pages/auth/[...].js. Within these components, interactions with Cognito user pools are seamlessly built-in using the Amplify library. 
+
 
 3. PolymerFront also integrates with **ApolloClient** using the [gatsby-plugin-apollo](https://www.gatsbyjs.com/plugins/gatsby-plugin-apollo) plugin, providing a robust platform for efficient communication with GraphQL APIs and streamlined data management.
 
@@ -64,7 +69,12 @@ apollo_client:
   uri: https://123abc.execute-api.ap-southeast-1.amazonaws.com/dev/api
 ```
 
-4. Finally, PolymerFront also integrates with both TailWindCSS and Preline, enhancing your styling capabilities. To add your custom styles, navigate to `src/styles/global.css`.
+4. Finally, PolymerFront also integrates with both [TailWindCSS](https://tailwindcss.com) and [Preline](https://preline.co), enhancing your styling capabilities. To add your custom styles, navigate to `src/styles/global.css`. 
+
+
+5. Under gatsby-browser.js, the application is bundled with a dark mode context. This integration enables the application to seamlessly switch between dark and light modes, utilising the ThemeToggler component located at src/components/theme/dark-toggler.js.
+
+
 
 
 ## Resources

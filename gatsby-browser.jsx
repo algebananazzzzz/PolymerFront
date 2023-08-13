@@ -1,3 +1,5 @@
+import React from 'react';
+import ThemeProvider from './src/components/theme/theme-context'
 import { Amplify } from 'aws-amplify';
 import './src/styles/global.css'
 require('preline')
@@ -18,3 +20,9 @@ Amplify.configure({
         }
     }
 });
+
+export const wrapRootElement = ({ element }) => (
+    <ThemeProvider>
+        {element}
+    </ThemeProvider>
+);
