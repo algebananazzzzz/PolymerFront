@@ -5,3 +5,7 @@ variable "aws_region" {
 variable "application_stage" {
   default = "dev"
 }
+
+variable "application_name" {
+
+}

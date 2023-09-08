@@ -1,6 +1,7 @@
 import React from "react";
 import { navigate } from "gatsby";
 import { Auth } from "aws-amplify";
+import HomeLayout from "../layout/home-layout";
 
 const AuthRoute = ({ component: Component, location, ...rest }) => {
     React.useEffect(() => {
@@ -31,7 +32,9 @@ const AuthRoute = ({ component: Component, location, ...rest }) => {
         return <div>Loading...</div>;
     }
 
-    return <Component {...rest} />;
+    return <HomeLayout>
+        <Component {...rest} />
+    </HomeLayout>;
 };
 
 export default AuthRoute;

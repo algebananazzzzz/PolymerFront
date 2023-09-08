@@ -1,3 +1,4 @@
+# Configures content of the Auth pages
 login:
   page_content:
     login:

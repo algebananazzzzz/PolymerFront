@@ -1,67 +1,152 @@
-import * as React from "react"
+import React from "react"
 import HomeLayout from "../components/layout/home-layout"
 
 const IndexPage = () => {
   return (
     <HomeLayout>
-      <div className="relative xl:h-[95vh] overflow-hidden">
-        <div aria-hidden="true" className="flex absolute -top-96 xl:top-0	 left-1/2 transform -translate-x-1/2">
-          <div className="bg-gradient-to-r from-violet-300/50 to-purple-100 blur-3xl w-[25rem] h-[44rem] rotate-[-60deg] transform -translate-x-[10rem] dark:from-violet-900/50 dark:to-purple-900"></div>
-          <div className="bg-gradient-to-tl from-blue-50 via-blue-100 to-blue-50 blur-3xl w-[90rem] h-[50rem] rounded-fulls origin-top-left -rotate-12 -translate-x-[15rem] dark:from-indigo-900/70 dark:via-indigo-900/70 dark:to-blue-900/70"></div>
-        </div>
+      <body class="min-h-screen dark:bg-slate-900">
+        <div class="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto space-y-5 lg:space-y-8">
+          <h3 className="text-3xl pt-7 lg:pt-10 font-semibold dark:text-white">Welcome to PolymerFront!</h3>
+          <div className="space-y-3">
+            <h4 className="text-2xl font-semibold dark:text-white">Configuration</h4>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              Configuration is stored in YAML files specific to CI/CD staging environments found in <b>`.polymer/.config`</b> that adhere to the format <b>&#123;stage&#125;.env.yml</b>. For local development (gatsby develop), the configuration is sourced from <b>`.polymer/.gatsbyconfig/development.env.yml`</b> instead.
+            </p>
+            <pre className="text-sm">
+              <code className="text-gray-800 dark:text-gray-200">
+                {`|-- .polymer
+|   |-- .config
+|   |   |-- dev.env.yml # for dev stage
+|   |   |-- test.env.yml
+|   |   |-- prod.env.yml
+|   |   |-- example.env.yml # example configuration file
+|   |-- .gatsbyconfig
+|   |   |-- development.env.yml # gatsby develop
+|   |   |-- example.env.yml # example configuration file
+|-- other files and directories
+`}
+              </code>
+            </pre>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              Configuration follows a single format, and consists of two key aspects:
+            </p>
+            <ul className="list-decimal list-outside space-y-3 pl-5 text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              <li className="pl-2">
+                <b>Resource Configuration</b>: configuration options for the CloudFront and S3 origin resources deployed to make site available e.g. domain customisation.
+              </li>
+              <li className="pl-2">
+                <b>Application Configuration</b>: configuration options for variables used in your application, including Cognito user and identity pool IDs, Apollo Client configuration, and S3 data bucket name.
+              </li>
+            </ul>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              Please refer to the <b>example.env.yml</b> for a well-commented example of configuration, and what the arguments represent.
+            </p>
+          </div>
+          <div className="space-y-3">
+            <h4 className="text-2xl font-semibold dark:text-white">Integrations</h4>
+            <ul className="list-decimal list-outside space-y-3 pl-5 text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              <li className="pl-2">
+                <b>The <a href="https://www.gatsbyjs.com/" target="blank" className="text-blue-600 decoration-2 hover:underline">GatsbyJS</a> Framework</b> to bundle React applications into static files for production (within GitHub Actions).
+              </li>
+              <li className="pl-2">
+                <b><a href="https://docs.amplify.aws/lib/q/platform/js/" target="blank" className="text-blue-600 decoration-2 hover:underline">Amplify</a> Auth and Content</b> packages to enable smooth interaction with Cognito Identity and User pools, and using S3 buckets for storing, retrieving user data and resources.
+              </li>
+              <li className="pl-2">
+                <b><a href="https://www.apollographql.com/docs/react/" target="blank" className="text-blue-600 decoration-2 hover:underline">Apollo-Client</a></b> integration through <b>gatsby-plugin-apollo</b> to provide a robust platform for efficient communication with GraphQL APIs and streamlined data management.
+              </li>
+              <li className="pl-2">
+                <b><a href="https://tailwindcss.com/" target="blank" className="text-blue-600 decoration-2 hover:underline">TailWindCSS</a></b> and <b>Preline</b> to enhance your styling capabilities. To add your custom styles, navigate to <b>`src/styles/global.css`</b>.
+              </li>
+              <li className="pl-2">
+                <b>Built-in authentication flow</b> pages and components seamlessly integrated with the Amplify Auth package. They are located at <b>`/src/components/auth`</b> and <b>`/src/pages/auth/[...].js`</b>, and can be configured in <b>`.polymer/content/auth.content.yml`</b>.
+              </li>
+            </ul>
 
-        <div className="relative z-10">
-          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-28">
-            <div className="max-w-2xl text-center mx-auto">
-              <p className="inline-block text-sm font-medium bg-clip-text bg-gradient-to-l from-blue-600 to-violet-500 text-transparent dark:from-blue-400 dark:to-violet-400">
+          </div>
+          <h3 className="text-3xl pt-7 lg:pt-10 font-semibold dark:text-white">Deployment</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-2xl font-semibold dark:text-white">1. Create and initialise Git</h4>
+            </div>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              After creating a GitHub Repository, perform the following steps
+            </p>
+            <pre className="text-sm">
+              <code className="text-gray-800 dark:text-gray-200">
+                {`git init
+git add -A
+git commit
+git checkout -b dev
+git remote set-url origin https://github.com/{your_repository_name}.git`}
+              </code>
+            </pre>
+          </div>
 
-              </p>
+          <div className="space-y-3 pt-3 lg:pt-5">
+            <h4 className="text-2xl font-semibold dark:text-white">2. Configure Action Secrets and Variables</h4>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              For secure and streamline access to AWS and Terraform Cloud, follow these steps to configure secrets and variables within your GitHub repository:
+            </p>
+            <ul className="list-disc list-outside space-y-3 pl-5 text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              <li className="pl-2">
+                Click on the Settings tab within your repository.
+              </li>
+              <li className="pl-2">
+                Navigate to Secrets (or Environments &gt; Secrets depending on your GitHub version).
+              </li>
+              <li className="pl-2">
+                Click on New repository secret to add secrets or New repository variable to add variables.
+              </li>
+            </ul>
+            <div className="space-y-2 pt-3">
+              <h5 className="text-xl font-semibold dark:text-white">Required Secrets:</h5>
+              <ul className="list-decimal list-outside space-y-3 pl-5 text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+                <li className="pl-2">
+                  <b>AWS_ACCESS_KEY_ID</b>: Your AWS access key ID.
+                </li>
+                <li className="pl-2">
+                  <b>AWS_SECRET_ACCESS_KEY</b>: Your AWS secret access key.
+                </li>
+                <li className="pl-2">
+                  <b>TF_API_TOKEN</b>: Obtain this token by going to your Terraform Cloud tokens page.
+                </li>
+              </ul>
 
-              <div className="mt-5 max-w-2xl">
-                <h1 className="block font-semibold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-gray-200">
-                  Welcome to Polymer
-                </h1>
-              </div>
-
-              <div className="mt-5 max-w-3xl">
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  A Framework to provision Serverless AWS resources using Terraform in CI/CD Pipelines
-                </p>
-              </div>
-
-              <div className="mt-8 grid gap-3 w-full sm:inline-flex sm:justify-center">
-                <button className="inline-flex justify-center items-center gap-x-3 text-center bg-indigo-600 hover:bg-indigo-700 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800">
-                  Get started
-                  <svg className="w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
+              <h5 className="pt-3 text-xl font-semibold dark:text-white">Required Variables:</h5>
+              <ul className="list-decimal list-outside space-y-3 pl-5 text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+                <li className="pl-2">
+                  <b>APPLICATION_NAME</b>: Set your application's name.
+                </li>
+                <li className="pl-2">
+                  <b>AWS_REGION</b>: Define the AWS region you're working with.
+                </li>
+                <li className="pl-2">
+                  <b>TF_ORGANISATION</b>: Terraform Cloud organization where the workspace will be created.
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
-      </div>
 
-      <footer class="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-        <div class="text-center">
-          <div class="mt-3">
-            <p class="text-gray-500">An Open-Source Project Created by Algebananazzzzz</p>
-            <p class="text-gray-500">Made with <a class="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400" href="https://www.gatsbyjs.com">Gatsby</a> and <a class="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400" href="https://preline.co">Preline</a></p>
-          </div>
-
-          <div class="mt-3 space-x-2">
-            <a class="inline-flex justify-center items-center w-10 h-10 text-center text-gray-500 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition dark:text-gray-500 dark:hover:text-gray-200 dark:hover:bg-gray-800" href="https://github.com/algebananazzzzz/PolymerFront">
-              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-              </svg>
-            </a>
+          <div className="space-y-3 pt-3 lg:pt-5">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-2xl font-semibold dark:text-white">3. Push to GitHub, let it run!</h4>
+            </div>
+            <pre className="text-sm">
+              <code className="text-gray-800 dark:text-gray-200">
+                {`git push --set-upstream origin dev`}
+              </code>
+            </pre>
+            <p className="text-base md:text-lg text-gray-800 dark:text-gray-200 text-justify">
+              With GitHub Actions in place, this push will automatically build necessary artifacts and trigger Terraform to provision the necessary resources.
+            </p>
           </div>
         </div>
-      </footer>
+
+      </body>
     </HomeLayout>
   )
 }
 
 export default IndexPage
 
-export const Head = () => <title>Polymer</title>
+export const Head = () => <title>PolymerFront</title>

@@ -4,24 +4,18 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 const stage = process.env.STAGE ? process.env.STAGE : 'dev'
-// Load environment variables from YAML file
+
+// Load environment variables from YAML files
 const yamlConfig = yaml.load(
   fs.readFileSync(`./.polymer/.config/${stage}.env.yml`, 'utf-8')
 );
-// Load environment variables from dotenv, which takes precedence
-const gatsbyConfig = yaml.load(
-  fs.readFileSync(`.polymer/.gatsbyconfig/${process.env.NODE_ENV}.env.yml`, 'utf-8')
-);
 
 var target_bucket = null;
-let application_name;
+
 
 function configureEnv(config) {
   Object.entries(config).forEach(([key, value]) => {
-    if (key === 'application_name') {
-      application_name = value
-      process.env.GATSBY_APPLICATION_NAME = value
-    } else if (key === 'cognito') {
+    if (key === 'cognito') {
       Object.entries(value).forEach(([key, value]) => {
         process.env[`GATSBY_COGNITO_${key.toUpperCase()}`] = value
       })
@@ -41,24 +35,27 @@ function configureEnv(config) {
 
 if (yamlConfig) {
   configureEnv(yamlConfig)
+} else if (process.env.NODE_ENV === "development") {
+  const gatsbyConfig = yaml.load(
+    fs.readFileSync(`.polymer/.gatsbyconfig/${process.env.NODE_ENV}.env.yml`, 'utf-8')
+  );
+  if (gatsbyConfig) {
+    configureEnv(gatsbyConfig)
+  } else {
+    throw new Error(`No configuration file specified for development. Expected configuration file in location .polymer/.gatsbyconfig/development.env.yml`);
+  }
 } else {
   throw new Error(`No configuration file specified. Expected configuration file in location .polymer/.config/${stage}.env.yml`);
 }
 
-// Override environment variables from gatsby_config, which takes precedence
-if (gatsbyConfig) {
-  configureEnv(gatsbyConfig)
-}
-
 const configuration = {
-  siteMetadata: {
-    title: `${application_name}`,
-    siteUrl: `https://www.yourdomain.tld`,
-  },
   plugins: [
     {
-      resolve: 'gatsby-plugin-apollo',
-    }
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        icon: "src/static/icon.png",
+      },
+    },
   ]
 }
 

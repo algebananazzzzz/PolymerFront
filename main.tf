@@ -5,13 +5,12 @@ provider "aws" {
 }
 
 locals {
-  config            = yamldecode(file("${path.root}/.polymer/.config/${var.application_stage}.env.yml"))
-  s3_origin_id      = format("%s-%s-s3originId", local.config.application_name, var.application_stage)
-  deployment_config = local.config.deployment
+  config       = yamldecode(file("${path.root}/.polymer/.config/${var.application_stage}.env.yml")).deployment
+  s3_origin_id = format("%s-%s-s3originId", var.application_name, var.application_stage)
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = local.deployment_config.target_bucket
+  bucket = local.config.target_bucket
   tags = {
     Environment = var.application_stage
   }
@@ -75,19 +74,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  aliases = lookup(local.deployment_config.domain, "aliases", [])
+  aliases = lookup(local.config.domain, "aliases", [])
 
   viewer_certificate {
-    acm_certificate_arn            = contains(keys(local.deployment_config.domain), "viewer_certificate") ? local.deployment_config.domain.viewer_certificate : null
-    cloudfront_default_certificate = contains(keys(local.deployment_config.domain), "viewer_certificate") ? false : true
+    acm_certificate_arn            = contains(keys(local.config.domain), "viewer_certificate") ? local.config.domain.viewer_certificate : null
+    cloudfront_default_certificate = contains(keys(local.config.domain), "viewer_certificate") ? false : true
     minimum_protocol_version       = "TLSv1.2_2021"
     ssl_support_method             = "sni-only"
   }
 }
 
 resource "aws_route53_record" "www" {
-  for_each = toset(local.deployment_config.domain.aliases)
-  zone_id  = local.deployment_config.domain.zone_id
+  for_each = toset(local.config.domain.aliases)
+  zone_id  = local.config.domain.zone_id
   name     = each.value
   type     = "A"
 

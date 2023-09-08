@@ -46,7 +46,9 @@ const ProtectedRoute = ({ component: Component, location, ...rest }) => {
         // Show a loading indicator or fallback component
         return <AppLayout></AppLayout>;
     } else if (session) {
-        return <Component session={session} signOut={handleSignOut} {...rest} />;
+        return <AppLayout signOut={handleSignOut}>
+            <Component session={session}  {...rest} />
+        </AppLayout>;
     } else {
         navigate("/auth/login");
         return null;
