@@ -22,6 +22,8 @@ const ToastProvider = (props) => {
         setTimeout(() => {
             removeToast(id)
         }, timeout);
+
+        return id
     }, [removeToast]);
 
     return (

@@ -1,136 +1,186 @@
 # PolymerFront
 
-PolymerFront is a Framework dedicated to empower FrontEnd development with React using GatsbyJS. It simplifies the provisioning of frontend Serverless AWS resources using Terraform with CI/CD pipelines. Additionally, it simplifies interactions with Cognito user and identity pools, as well as S3 data buckets, by configuring Amplify to interact with these services. This also encompasses user signup, login, verification, forgot password, and change password pages, including the underlying logic that interacts with Amplify.
+PolymerFront is part of the Polymer framework, a DevOps framework created to provide developers with a framework empowering them to concentrate on what they do best – writing code and developing their applications. This is achieved through these steps:
 
+1. Simplify the configuration process in provisioning resources by utilizing a single concise "Source-of-Truth" in the `stage.env.yml` files.
+2. Establish robust CI/CD pipelines with GitHub Actions for seamless, automated deployments.
+3. Minimize need for constant maintenance by provisioning Serverless AWS resources.
+
+
+## Templates
+Each template is designed with distinct integrations to fulfill specific purposes:
+
+1. [PolymerBase repository](https://github.com/algebananazzzzz/PolymerBase) - for developing Backend resources e.g. GraphQL APIs and Cognito Pools
+3. [PolymerFront repository](https://github.com/algebananazzzzz/PolymerFront) - for creating React applications with GraphQL and Amplify integrations
+4. [PolymerFront-lite repository](https://github.com/algebananazzzzz/PolymerFront-lite) - lite version of PolymerFront
+
+I highly recommend viewing [my blog](https://algebananazzzzz.com/blog/polymer) for a more comprehensive guide.
+maintenance
 
 ## Table of Contents
 
 - [About](#about)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
 - [Configuration](#configuration)
-- [Integrations](#integrations)
-- [Resources](#resources)
-- [Installation](#installation)
+  - [Configuration file locations](#configuration-file-locations)
+  - [Types of Configuration](#types-of-configuration)
+- [Usage](#usage)
+  - [Editing Auth Page Content](#editing-authentication-flow-page-content)
+  - [Toggling Dark Mode](#toggling-dark-mode)
+  - [Using Informational Toasts](#using-informational-toasts)
+  - [Amplify and Apollo-Client](#amplify-and-apollo-client-integration)
 - [Deployment](#deployment)
+  - [Using GitHub Actions](#using-gitHub-actions-(recommended))
+  - [Using Terraform Locally](#using-terraform-locally)
 - [License](#license)
 - [Contact](#contact)
 
+
 ## About
 
-PolymerFront is a member of the Polymer framework family, designed to empower developers in building sophisticated applications. This framework utilizes Terraform for provisioning Serverless resources within the AWS Cloud Infrastructure, while also facilitating the establishment of streamlined CI/CD pipelines through GitHub Actions. For more information about the Polymer framework, please visit the [PolymerBase repository](https://github.com/algebananazzzzz/PolymerBase).
+PolymerFront specialises in creating Robust React applications with Gatsby, with integrations with the **AWS Amplify** package and **prebuilt authentication flow**, **inbuilt dark theme and toast feature** suitable for Full-Stack Applications.
 
 
-PolymerFront aims to empower frontend development with React. This framework enables developers to bundle React application with GatsbyJS, push content to S3 and subsequently deliver content to consumers via CloudFront. The process is optimized through streamlined CI/CD pipelines, ensuring efficient and reliable deployment.
+## Getting Started
 
-## Configuration
+### Prerequisites
 
-Please refer to the example configuration file for additional information:
-[Example Configuration File](.polymer/.config/example.{stage}.env.yml)
+Before you begin, ensure you have met the following requirements:
+  
+1. **Node.js and npm**: To develop and build the project, you need to have Node.js and npm (Node Package Manager) installed.
 
-
-Configuration within PolymerFront consists of three key aspects:
-
-1. Resource Configuration: This involves the setup and customization of the resources that PolymerFront deploys, including CloudFront and S3.
-
-2. Application Configuration: Variables used in your application. Consists of parameters such as Cognito user and identity pool IDs, Apollo Client configuration, and S3 data bucket name
-
-3. Content Configuration: Customize the title, description, and links within the authentication pages like signup, login, and forgot password. Modify this configuration in the .polymer/content/auth.content.yml file. 
-
-Configuration is stored in YAML files, specific to CI/CD staging environments. General configuration files are located in .polymer/.config and should follow the format {stage}.env.yml (e.g., dev.env.yml for development).
-
-Gatsby configuration files are found in .polymer/.gatsbyconfig folder, used to configure environment variables during bundling (gatsby build) or local development (gatsby develop). It should follow the format {stage}.env.yml (e.g., development.env.yml for development). An example usage: GATSBY_APOLLO_URI = http://localhost:4000
-
-## Integrations
-
-1. PolymerFront utilises the **GatsbyJS framework** to bundle **React** applications into static files for production. Learn more about [GatsbyJS](https://www.gatsbyjs.com). 
-
-2. It integrates with the **[Amplify](https://docs.amplify.aws/lib/q/platform/js/) Auth and Content** package, allowing for smooth interaction with Cognito identity and user pools. This integration also enables the utilization of S3 buckets for the storage of user data and other essential resources. 
+  - **Node.js**: Download from [the official Node.js website](https://nodejs.org/). We recommend using Node.js version 14.17.0 or higher.
+  - **NPM (Node Package Manager)**: NPM is usually included with Node.js installation. If NPM is not installed, you can download it from the [official npm website](https://www.npmjs.com/).
 
 
-To configure cognito user and identity pool, as well as data buckets, follow this syntax:
-```yaml
-cognito:
-  region: ap-southeast-1
-  userpoolid: ap-southeast-1_abc123
-  webclientid: 1234556dasdsadsad
-  identitypoolid: ap-southeast-1:1234-1234-1244-3213 # optional, if identity pool not required
-storage:
-  name: polymer-bucket-data
-  region: ap-southeast-1
-```
-
-Furthermore, the application includes a built-in authentication flow page and components located at /src/components/auth and /src/pages/auth/[...].js. Within these components, interactions with Cognito user pools are seamlessly built-in using the Amplify library. 
-
-
-3. PolymerFront also integrates with **ApolloClient** using the [gatsby-plugin-apollo](https://www.gatsbyjs.com/plugins/gatsby-plugin-apollo) plugin, providing a robust platform for efficient communication with GraphQL APIs and streamlined data management.
-
-To configure the source URI for Apollo Client:
-```yaml
-apollo_client:
-  uri: https://123abc.execute-api.ap-southeast-1.amazonaws.com/dev/api
-```
-
-4. Finally, PolymerFront also integrates with both [TailWindCSS](https://tailwindcss.com) and [Preline](https://preline.co), enhancing your styling capabilities. To add your custom styles, navigate to `src/styles/global.css`. 
-
-
-5. Under gatsby-browser.js, the application is bundled with a dark mode context. This integration enables the application to seamlessly switch between dark and light modes, utilising the ThemeToggler component located at src/components/theme/dark-toggler.js.
-
-
-
-
-## Resources
-
-Here are the resources that PolymerFront will deploy, along with instructions on how to configure them:
-
-1. **S3 Source Bucket** to store Frontend Site Content
-
-Under deployment, you can choose the name for S3 bucket to be provisioned
-```yaml
-deployment:
-  target_bucket: polymer-bucket
-```
-
-2. **Cloudfront Distribution** to serve content. This content delivery network (CDN) distributes content to edge locations worldwide, optimizing load times and user experiences.
-
-Under deployment, you can choose the [price class](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html) and domain configuration for Cloudfront
-```yaml
-deployment:
-  cloudfront:
-    price_class: PriceClass_200 # PriceClass_All , PriceClass_200, PriceClass_100
-  domain: # optional
-    zone_id: Z123456789123D
-    aliases:
-      - polymerism.polymer.com
-    viewer_certificate: arn:aws:acm:us-east-1:123456789
-```
-
-## Installation
-
-1. Create a new Gatsby Application with the PolymerFront Framework
-```shell
-gatsby new your_application_name https://github.com/algebananazzzzz/PolymerFront
-```
-
-For instructions on installing Gatsby Client, [read more](https://www.gatsbyjs.com/docs/tutorial/getting-started/part-0/)
+2. **Gatsby CLI**: This project uses Gatsby, so you'll need the Gatsby CLI (Command Line Interface) to manage and build your site. You can install it globally by running:
+  
 ```shell
 npm install -g gatsby-cli
 ```
 
+### Installation
 
-2. Develop your React application
+1. **Create a New Gatsby Project**:
+
+Create a new project with Gatsby-CLI:
+
 ```shell
-cd your_application_name/
+gatsby new MyProject https://github.com/algebananazzzzz/PolymerFront.git
+```
+
+## Configuration
+
+### Configuration file locations
+
+Configuration is stored in YAML files specific to CI/CD staging environments. The configuration files must follow the naming convention `{stage}.env.yml`. For local development (gatsby develop), the configuration is sourced from `.polymer/.gatsbyconfig/development.env.yml` instead:
+
+```
+|-- .polymer
+|   |-- .config
+|   |   |-- dev.env.yml # for dev stage
+|   |   |-- test.env.yml
+|   |   |-- prod.env.yml|   |-- .gatsbyconfig
+|   |   |-- development.env.yml # gatsby develop
+|   |   |-- example.env.yml # example configuration file
+|   |-- .gatsbyconfig
+|   |   |-- development.env.yml # gatsby develop
+|   |   |-- example.env.yml # example configuration file
+|-- other files and directories
+```
+
+Please view the example configuration file for [staging environments](.polymer/.config/example.env.yml) and [local development](.polymer/.gatsbyconfig/example.env.yml) to understand how to configure configuration files. The comments within the file provide detailed explanations of what each field configures.
+
+### Types of Configuration
+
+1. **Resource configuration**: Encompasses settings for CloudFront and S3 origin resources used to make the site available, including domain customization.
+
+2. **Application Configuration**: Includes options for configuring AWS Amplify and variables used in your application. This includes Cognito user and identity pool IDs, Apollo Client configuration, and the S3 data bucket name.
+
+## Usage
+
+To develop Gatsby locally, start the Gatsby development server by running:
+
+```shell
 gatsby develop
 ```
 
-## Deployment
+### Editing Authentication Flow Page Content
 
-1. **Build Production Sites**
-Execute the following command to build production-ready sites using Gatsby:
-```shell
-gatsby build
+PolymerFront includes a built-in authentication flow powered by the AWS Amplify Auth package. The page routing for authentication can be located in [src/pages/auth/[...].js](src/pages/auth/[...].js), while custom authentication components are stored in the [src/components/auth](src/components/auth) directory. Additionally, the prebuilt navbars included in PolymerFront offer redirect links to the auth pages. Finally, under [src/components/auth](src/components/auth), there are **ProtectedRoute** and **AuthRoute** components that you can use to route users to application routes or public routes respectively.
+
+You can customize and edit the authentication flow page content to match your application's requirements, through the .[polymer/content/auth.content.yml](.polymer/content/auth.content.yml) file.
+
+### Toggling Dark Mode 
+
+PolymerFront offers a convenient dark mode feature. The dark mode functionality is provided through a context provider located at `src/components/theme/theme-context.js` and a dark mode toggler component found at `src/components/theme/dark-toggler.js`. To toggle dark mode in your application:
+
+
+```jsx
+import React, { useContext } from 'react';
+import { ThemeContext } from '../theme/theme-context';
+import ThemeToggler from '../theme/dark-toggler';
+
+function Page() {
+  const { theme, changeTheme } = useContext(ThemeContext);
+
+  return (
+    <div className="dark:bg-slate-900">
+      <ThemeToggler theme={theme} changeTheme={changeTheme} />
+    </div>
+  );
+}
 ```
 
-2. **Create a GitHub Repository:**
+### Using Informational Toasts
+
+PolymerFront offers a convenient toast feature. The functionality is provided through a context provider located at `src/components/toast/toast-context.js`. To add or remove toasts in your application:
+
+
+```jsx
+import React, { useContext, useState } from 'react';
+import { ToastContext } from '../toast/toast-context'
+
+function Page() {
+  const [toastId, settoastId] = useState(null)
+  const { toasts, addToast, removeToast } = useContext(ToastContext)
+
+  const handleToasts = () => {
+    if (toastId) {
+      removeToast(toastId)
+      settoastId(null)
+    } else {
+      const _id = addToast(message="New Toast!", type = 'info', timeout = 5000)
+      settoastId(_id)
+    }
+  }
+
+  return (
+    <div className="dark:bg-slate-900">
+      {console.log(toasts)}
+      <button onClick={handleToasts}/>
+    </div>
+  );
+}
+```
+
+### Amplify and Apollo-Client Integration
+
+Under the application configuration, PolymerFront has been configured with Amplify variables to enhance aspects of your application:
+
+- **Authentication**: Amplify simplifies user authentication and authorization, making it easy to securely manage user attributes. Learn more in the [Amplify Authentication documentation](https://docs.amplify.aws/lib/auth/getting-started/q/platform/js).
+
+- **Storage**: Amplify seamlessly integrates with Amazon S3, offering scalable and secure file storage capabilities, simplifying the management of user uploads and media assets. Explore more in in the [Amplify Storage documentation](https://docs.amplify.aws/lib/storage/getting-started/q/platform/js).
+
+PolymerFront also integrates with **[ApolloClient](https://www.apollographql.com/docs/react)** using the [gatsby-plugin-apollo](https://www.gatsbyjs.com/plugins/gatsby-plugin-apollo) plugin, providing a robust platform for efficient communication with GraphQL APIs and streamlined data management.
+
+## Deployment
+
+### Using GitHub Actions (Recommended)
+
+1. **Create a GitHub Repository:**
 Start by creating a GitHub repository. After that, follow these steps to initialize Git and switch to the `dev` branch:
 ```
 git init
@@ -140,7 +190,7 @@ git checkout -b dev
 git remote set-url origin https://github.com/{your_repository_name}.git
 ```
 
-3. **Configure Secrets and Variables:**
+2. **Configure Secrets and Variables:**
 
 For secure and streamline access to AWS and Terraform Cloud, follow these steps to configure secrets and variables within your GitHub repository:
 
@@ -160,13 +210,82 @@ For secure and streamline access to AWS and Terraform Cloud, follow these steps 
 2. `AWS_REGION`: Define the AWS region you're working with.
 3. `TF_ORGANISATION`: If not already created, create a Terraform Cloud organization for use.
 
-4. **Push to GitHub**
+3. **Push to GitHub**
 ```shell
 git push --set-upstream origin dev
 ```
 
-With GitHub Actions in place, this push will automatically trigger Terraform Cloud to provision the necessary resources.
+With GitHub Actions in place, this push will automatically trigger the following processes:
 
+- Webpack will bundle your Node.js code, optimizing it for production deployment.
+
+- If a workspace for your organization doesn't already exist, Terraform Cloud will create one.Terraform Cloud will then be triggered to provision the necessary resources according to your infrastructure configuration. 
+
+
+4. **Staging**
+
+After a successful deployment of the dev branch, you can extend the same workflow to deploy your application to other stages, such as **test** or **production**. Follow these steps for each stage:
+
+- Create a new branch corresponding to the stage you want to deploy (e.g., `test`, `prod`).
+- Merge the `dev` branch into the newly created stage branch. 
+
+This push to the stage branch will automatically trigger GitHub Actions to provision resources for the specified stage. Repeat these steps for each stage as needed, allowing you to deploy your application to multiple environments seamlessly.
+
+
+### Using Terraform Locally
+
+If you prefer to use Terraform locally and avoid pushing code to GitHub, you can follow these steps. This approach offers several benefits, including greater control and flexibility over your infrastructure provisioning.
+
+1. **Check Terraform Version**:
+
+    After downloading Terraform, verify its version to ensure it's correctly installed:
+
+     ```shell
+     terraform -v
+     ```
+     
+2. **Update terraform.tf Configuration**:
+
+Modify the `terraform.tf` configuration file to specify the required Terraform version under the `required_version` block, and comment out the "cloud" block:
+
+```hcl
+terraform {
+  required_version = "~>1.5.0"
+
+    # cloud {
+    #   workspaces {
+    #     tags = ["github-actions"]
+    #   }
+    # }
+
+  # Other configuration settings...
+}
+```
+
+3. **Specify Staging Environment**:
+
+To define the staging environment you intend to work with, set the `STAGE` variable:
+
+```shell
+export STAGE=dev
+```
+
+4. **Terraform Init, Plan and Apply**:
+
+```shell
+terraform init
+terraform plan
+terraform apply --auto-approve
+```
+
+5. **Gatsby Build and Deploy**
+
+After the necessary resources are deployed, run Gatsby Build to create optimized static assets for your site, then use the npm deploy script to push the assets to Amazon S3 via the gatsby-plugin-s3:
+
+```shell
+gatsby build 
+npm run deploy
+```
 
 ## License
 

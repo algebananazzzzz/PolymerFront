@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'gatsby'
-import { ThemeContext } from '../theme/theme-context';
 import { ToastContext } from '../toast/toast-context';
+import { ThemeContext } from '../theme/theme-context';
 import ThemeToggler from '../theme/dark-toggler';
 
 const AppLayout = ({ children, signOut }) => {
